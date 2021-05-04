@@ -6,13 +6,14 @@ using namespace std;
 class board {
 private:
 	sf::Sprite ghLine, gvLine, rhLine, rvLine, swOn, swOff,
-		pduOff, pduOn, upsOff, upsOn,
+		pduOff, pduOn, upsOff, upsOn,on3,off3,
 		bLeiQi, temp_Sprite, AC;
 	sf::Texture gh, gv, rh, rv, swOn_texture, swOff_texture, pduOff_texture,
-		pduOn_texture, upsOn_texture, upsOff_texture,
+		pduOn_texture, upsOn_texture, upsOff_texture,on3_texture,off3_texture,
 		bleiqi, temp_texture, ac;
 	map<string, sf::Sprite> layout;
 	map<int, bool> switch_Status;
+
 public:
 	board() {
 		//length 80, width 20
@@ -28,6 +29,10 @@ public:
 		swOff.setTexture(swOff_texture);
 		swOn_texture.loadFromFile("pics/switchOn.png");
 		swOn.setTexture(swOn_texture);
+		on3_texture.loadFromFile("pics/3on.png");
+		on3.setTexture(on3_texture);
+		off3_texture.loadFromFile("pics/3off.png");
+		off3.setTexture(off3_texture);
 		pduOff_texture.loadFromFile("pics/PDUOff.png", sf::IntRect(2 / 2, 2 / 2, 396 / 2, 38 / 2));
 		pduOff.setTexture(pduOff_texture);
 		pduOn_texture.loadFromFile("pics/PDUOn.png", sf::IntRect(4 / 2, 4 / 2, 396 / 2, 38 / 2));
@@ -41,17 +46,20 @@ public:
 		ac.loadFromFile("pics/AC.png");
 		AC.setTexture(ac);
 	}
+	void setMain() {
+
+	}
 	void setBoard() {
 		//before first vertical line
 		float x = 300/2, y = 580/2;
 		int s_index = 1;
 		ghLine.setPosition(x - 80 / 2, y);
 		rhLine.setPosition(x + 68 / 2, y);
-		swOff.setPosition(x, y - 49 / 2);
+		off3.setPosition(x, y - 49 / 2);
 		rvLine.setPosition(x + 68 / 2 + 80 / 2, y + 10 / 2);
 		bLeiQi.setPosition(x + (68 + 80 - 40) / 2, y + (10 + 80 + 80 + 80) / 2);
 		layout["a0"] = ghLine;
-		layout["s1"] = swOff;
+		layout["s1"] = off3;
 		swOff.setPosition(x + (68 + 80 - 30) / 2, y + (10 + 80) / 2);
 		layout["s2"] = swOff;
 		layout["a1"] = rhLine;
@@ -86,8 +94,14 @@ public:
 			j++;
 			index = to_string(j);
 			layout["midh" + temp + index] = rhLine;
-			swOff.setPosition(x + 80 / 2 + 80 / 2, y - (float)48.5 / 2);
-			layout["s" + s_string] = swOff;
+			if (s_string == "3" || s_string == "4") {
+				off3.setPosition(x + 80 / 2 + 80 / 2, y - (float)48.5 / 2);
+				layout["s" + s_string] = off3;
+			}
+			else {
+				swOff.setPosition(x + 80 / 2 + 80 / 2, y - (float)48.5 / 2);
+				layout["s" + s_string] = swOff;
+			}
 			s_index++;
 			j++;
 			rhLine.setPosition(x + 160 / 2 + 68 / 2, y);
@@ -110,8 +124,8 @@ public:
 		layout["UPS"] = upsOff;
 		rhLine.setPosition(x + 116 / 2, y);
 		layout["midh15"] = rhLine;
-		swOff.setPosition(x + 116 / 2 + 80 / 2, y - (float)48.5 / 2);
-		layout["s13"] = swOff;
+		off3.setPosition(x + 116 / 2 + 80 / 2, y - (float)48.5 / 2);
+		layout["s13"] = off3;
 		for (int i = 0; i < 2; i++) {
 			string temp = to_string(i + 6);
 			rhLine.setPosition(x + (116 + 80 + 68) / 2, y);
@@ -205,8 +219,8 @@ public:
 		if (!switch_Status[1]) {
 			float x = getPosition("s1").first;
 			float y = getPosition("s1").second;
-			swOn.setPosition(x, y);
-			layout["s1"] = swOn;
+			on3.setPosition(x, y);
+			layout["s1"] = on3;
 			for (auto it : layout) {
 				string temp = it.first;
 				if (temp == "a1" || temp == "a4" || temp == "a5" ||
@@ -235,8 +249,8 @@ public:
 		else {
 			float x = getPosition("s1").first;
 			float y = getPosition("s1").second;
-			swOff.setPosition(x, y);
-			layout["s1"] = swOff;
+			off3.setPosition(x, y);
+			layout["s1"] = off3;
 			for (auto it : layout) {
 				string temp = it.first;
 				if (temp == "a1" || temp == "a4" || temp == "a5" ||
@@ -350,8 +364,8 @@ public:
 			}
 		}
 		else if (switch_Status[1]==true&&switch_Status[4] == true && switch_Status[13] == false) {
-			swOn.setPosition(temp.first, temp.second);
-			layout["s13"] = swOn;
+			on3.setPosition(temp.first, temp.second);
+			layout["s13"] = on3;
 			lineTemp = ghLine;
 			vLineTemp = gvLine;
 			temp_texture.loadFromFile("pics/vertical_line.png", sf::IntRect(0, 0, 20 / 2, 40 / 2));
@@ -397,11 +411,11 @@ public:
 			vLineTemp = rvLine;
 			temp_texture.loadFromFile("pics/vertical_line.png", sf::IntRect(0, 450 / 2, 12 / 2, 40 / 2));
 			if (switch_Status[13] == false) {
-				temp_Sprite = swOn;
+				temp_Sprite = on3;
 				switch_Status[13] = true;
 			}
 			else {
-				temp_Sprite = swOff;
+				temp_Sprite = off3;
 				switch_Status[13] = false;
 			}
 			temp_Sprite.setPosition(temp.first, temp.second);
@@ -509,8 +523,8 @@ public:
 			}
 			else if (switch_Status[1] == true && switch_Status[3] == false) {
 				pair<float, float> temp = getPosition(switchName);
-				swOn.setPosition(temp.first, temp.second);
-				layout[switchName] = swOn;
+				on3.setPosition(temp.first, temp.second);
+				layout[switchName] = on3;
 				ghLine.setPosition(temp.first + 68 / 2, temp.second+49 / 2);
 				layout["midh02"] = ghLine;
 				switch_Status[3] = true;
@@ -518,13 +532,13 @@ public:
 			else {
 				pair<float, float> temp = getPosition(switchName);
 				if (switch_Status[3] == false) {
-					swOn.setPosition(temp.first, temp.second);
-					layout[switchName] = swOn;
+					on3.setPosition(temp.first, temp.second);
+					layout[switchName] = on3;
 					switch_Status[3] = true;
 				}
 				else {
-					swOff.setPosition(temp.first, temp.second);
-					layout[switchName] = swOff;
+					off3.setPosition(temp.first, temp.second);
+					layout[switchName] = off3;
 					rhLine.setPosition(temp.first + 68 / 2, temp.second+49 / 2);
 					layout["midh02"] = rhLine;
 					switch_Status[3] = false;
@@ -560,8 +574,8 @@ public:
 				setS13("s13");
 			}
 			else if (switch_Status[1] == true&&switch_Status[4]==false) {
-				swOn.setPosition(temp.first, temp.second);
-				layout["s4"] = swOn;
+				on3.setPosition(temp.first, temp.second);
+				layout["s4"] = on3;
 				for (int i = 0; i < 4; i++) {
 					float x = getPosition("midh1" + to_string(i + 2)).first;
 					float y = getPosition("midh1" + to_string(i + 2)).second;
@@ -577,13 +591,13 @@ public:
 			}
 			else {
 				if (switch_Status[4] == false) {
-					swOn.setPosition(temp.first, temp.second);
-					layout["s4"] = swOn;
+					on3.setPosition(temp.first, temp.second);
+					layout["s4"] = on3;
 					switch_Status[4] = true;
 				}
 				else {
-					swOff.setPosition(temp.first, temp.second);
-					layout["s4"] = swOff;
+					off3.setPosition(temp.first, temp.second);
+					layout["s4"] = off3;
 					switch_Status[4] = false;
 				}
 				for (int i = 0; i < 4; i++) {
