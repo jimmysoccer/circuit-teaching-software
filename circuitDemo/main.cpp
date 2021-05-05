@@ -5,12 +5,12 @@ using namespace std;
 int main()
 {
     ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
-    //2400 * 1450
+    //1200 * 725
     sf::RenderWindow window(sf::VideoMode(2400 / 2, 1450 / 2), "circuit teaching demo");
     sf::Style::None;
 
     board win;
-    win.setBoard();
+    win.setMain();
     while (window.isOpen())
     {
         sf::Event event;
@@ -25,6 +25,12 @@ int main()
                     sf::Vector2i position_i = sf::Mouse::getPosition(window);
                     sf::Vector2f position_f = window.mapPixelToCoords(position_i);
                     string sName= win.clickOnSwitch(position_f.x, position_f.y);
+                    if (sName == "button") {
+                        win.setBoard();
+                    }
+                    else if (sName == "return") {
+                        win.setMain();
+                    }
                     if ( sName!= "false") {
                         if (sName == "s1") {
                             win.setS1();

@@ -1,4 +1,12 @@
 ﻿  main.cpp
+C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\board.h(61,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\board.h(61,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\board.h(63,59): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\board.h(63,26): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
 C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\main.cpp(27,77): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
           with
           [
@@ -10,8 +18,8 @@ C:\Users\jimmy\source\repos\circuitDemo\circuitDemo\main.cpp(27,63): warning C42
               T=float
           ]
   Generating code
-  1 of 496 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  1 of 498 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+    4 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   circuitDemo.vcxproj -> C:\Users\jimmy\source\repos\circuitDemo\Release\circuitDemo.exe

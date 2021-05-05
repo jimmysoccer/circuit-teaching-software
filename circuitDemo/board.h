@@ -7,10 +7,10 @@ class board {
 private:
 	sf::Sprite ghLine, gvLine, rhLine, rvLine, swOn, swOff,
 		pduOff, pduOn, upsOff, upsOn,on3,off3,
-		bLeiQi, temp_Sprite, AC;
+		bLeiQi, temp_Sprite, AC,White,Button,Title,ReturnB;
 	sf::Texture gh, gv, rh, rv, swOn_texture, swOff_texture, pduOff_texture,
 		pduOn_texture, upsOn_texture, upsOff_texture,on3_texture,off3_texture,
-		bleiqi, temp_texture, ac;
+		bleiqi, temp_texture, ac,white,button,title,returnB;
 	map<string, sf::Sprite> layout;
 	map<int, bool> switch_Status;
 
@@ -45,12 +45,27 @@ public:
 		bLeiQi.setTexture(bleiqi);
 		ac.loadFromFile("pics/AC.png");
 		AC.setTexture(ac);
+		white.loadFromFile("pics/vertical_line.png", sf::IntRect(100, 50, 20, 25));
+		White.setTexture(white);
+		button.loadFromFile("pics/button.png");
+		Button.setTexture(button);
+		returnB.loadFromFile("pics/return.png");
+		ReturnB.setTexture(returnB);
+		title.loadFromFile("pics/title.png");
+		Title.setTexture(title);
 	}
 	void setMain() {
-
+		layout.clear();
+		int titleX = 600 - title.getSize().x / 2;
+		int titleY = 725 / 2 - title.getSize().y / 2-100;
+		Title.setPosition(titleX,titleY);
+		layout["title"] = Title;
+		Button.setPosition(600 - button.getSize().x / 2, titleY + 150);
+		layout["button"] = Button;
 	}
 	void setBoard() {
 		//before first vertical line
+		layout.clear();
 		float x = 300/2, y = 580/2;
 		int s_index = 1;
 		ghLine.setPosition(x - 80 / 2, y);
@@ -194,22 +209,38 @@ public:
 		for (int i = 0; i < 22; i++) {
 			switch_Status[i + 1] = false;
 		}
+		ReturnB.setPosition(820, 610);
+		layout["return"] = ReturnB;
 	}
 	string clickOnSwitch(int x, int y) {
 		//switch 68*97
 		map<string, pair<float, float>> s;
 		pair<float, float> temp;
 		for (auto it : layout) {
-			if (it.first.at(0) == 's') {
+			if (it.first.at(0) == 's'||it.first=="button"||it.first=="return") {
 				temp.first = it.second.getPosition().x;
 				temp.second = it.second.getPosition().y;
 				s[it.first] = temp;
 			}
 		}
 		for (auto it : s) {
-			if (x > it.second.first&& x<it.second.first + 68 / 2 &&
-				y>it.second.second&& y < it.second.second + 97 / 2) {
-				return it.first;
+			string res=it.first;
+			if (res == "button"||res=="return") {
+				if (x > it.second.first&& x<it.second.first + 144 &&
+					y>it.second.second&& y < it.second.second + 66)
+					return res;
+			}
+			else if (res == "s1" || res == "s3" || res == "s4" || res == "s13") {
+				if (x > it.second.first&& x<it.second.first + 34 &&
+					y>it.second.second&& y < it.second.second + 49) {
+					return res;
+				}
+			}
+			else {
+				if (x > it.second.first&& x<it.second.first + 38 &&
+					y>it.second.second&& y < it.second.second + 60) {
+					return res;
+				}
 			}
 		}
 		return "false";
